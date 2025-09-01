@@ -214,12 +214,13 @@ class ScreenObtainer {
         // The options passed to this method should take precedence over the global settings.
         const {
             desktopSharingFrameRate = this.options?.desktopSharingFrameRate,
+            desktopSharingAspectRatio = this.options?.desktopSharingAspectRatio,
             resolution = this.options?.resolution,
             screenShareSettings = this.options?.screenShareSettings
         } = options;
 
         if (typeof desktopSharingFrameRate === 'object') {
-            video.frameRate = desktopSharingFrameRate;
+            video.frameRate = { ...desktopSharingFrameRate };
         }
 
         // At the time of this writing 'min' constraint for fps is not supported by getDisplayMedia on any of the
@@ -291,7 +292,7 @@ class ScreenObtainer {
                     const trackConstraints = {
                         frameRate: {
                             min: minFps
-                        }
+                        },
                     };
 
                     // Set the resolution if it is specified in the options. This is currently only enabled for testing.
@@ -300,6 +301,10 @@ class ScreenObtainer {
                     if (resolution && this.options.testing?.testMode) {
                         trackConstraints.height = resolution;
                         trackConstraints.width = Math.floor(resolution * 16 / 9);
+                    }
+
+                    if (desktopSharingAspectRatio) {
+                        trackConstraints.aspectRatio = desktopSharingAspectRatio;
                     }
 
                     try {
