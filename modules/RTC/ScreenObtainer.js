@@ -213,7 +213,8 @@ const ScreenObtainer = {
         const constraintOpts = {};
         const {
             desktopSharingFrameRate,
-            screenShareSettings
+            screenShareSettings,
+            desktopSharingAspectRatio
         } = this.options;
 
         if (typeof desktopSharingFrameRate === 'object') {
@@ -286,14 +287,19 @@ const ScreenObtainer = {
                         minFps = desktopSharingFrameRate.min;
                     }
 
-                    const contraints = {
+                    const trackConstraints = {
                         frameRate: {
                             min: minFps
-                        }
+                        },
                     };
 
+
+                    if (desktopSharingAspectRatio) {
+                        trackConstraints.aspectRatio = desktopSharingAspectRatio;
+                    }
+
                     try {
-                        track.applyConstraints(contraints);
+                        track.applyConstraints(trackConstraints);
                     } catch (err) {
                         logger.warn(`Min fps=${minFps} constraint could not be applied on the desktop track,`
                             + `${err.message}`);
