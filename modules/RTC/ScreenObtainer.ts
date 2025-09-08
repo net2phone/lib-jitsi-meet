@@ -49,6 +49,8 @@ interface IScreenShareSettings {
     desktopSelfBrowserSurface?: string;
     desktopSurfaceSwitching?: string;
     desktopSystemAudio?: string;
+    videoHeight?: number;
+    videoWidth?: number;
 }
 
 
@@ -429,6 +431,12 @@ class ScreenObtainer {
             if (!(desktopSharingFrameRate?.max > SS_DEFAULT_FRAME_RATE)) {
                 video.height = 99999;
                 video.width = 99999;
+            }
+
+            // Redefined width and height if needed
+            if (screenShareSettings?.videoWidth && screenShareSettings?.videoHeight) {
+                video.width = screenShareSettings.videoWidth;
+                video.height = screenShareSettings.videoHeight;
             }
         }
 
