@@ -255,6 +255,12 @@ class ScreenObtainer {
                 video.height = 99999;
                 video.width = 99999;
             }
+
+            // Redefined width and height if needed
+            if (screenShareSettings?.videoWidth && screenShareSettings?.videoHeight) {
+                video.width = screenShareSettings.videoWidth;
+                video.height = screenShareSettings.videoHeight;
+            }
         }
 
         // Allow a user to be shown a preference for what screen is to be captured.
@@ -292,7 +298,7 @@ class ScreenObtainer {
                     const trackConstraints = {
                         frameRate: {
                             min: minFps
-                        },
+                        }
                     };
 
                     // Set the resolution if it is specified in the options. This is currently only enabled for testing.
